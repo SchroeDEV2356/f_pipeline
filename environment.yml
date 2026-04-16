@@ -1,0 +1,28 @@
+# environment.yml — define el entorno conda completo del proyecto.
+#
+# Por qué este archivo y no requirements.txt:
+#   - conda lo entiende de forma nativa; pip no conoce este formato.
+#   - Puedes especificar incluso la versión de Python, no solo la de paquetes.
+#   - conda-forge es el canal de la comunidad: más paquetes y más actualizados
+#     que el canal oficial (defaults). Es la elección estándar en proyectos serios.
+#
+# Regla práctica: todo lo que exista en conda-forge, instálalo por conda.
+#   Solo usa la sección pip: para paquetes que NO están en ningún canal conda.
+#   En este proyecto todo está en conda-forge, así que la sección pip no aparece.
+ 
+name: first_pipeline          # nombre del entorno; cámbialo si quieres
+ 
+channels:
+  - conda-forge            # canal preferido: prioridad 1
+  - defaults               # canal oficial de Anaconda: fallback
+ 
+dependencies:
+  - python=3.12            # versión de Python fijada para reproducibilidad
+  - requests=2.32.3        # cliente HTTP
+  - urllib3=2.2.3          # capa de transporte que usa requests internamente
+  - python-dotenv=1.0.1    # leer variables desde .env
+  - pandas=2.2.3           # transformación y limpieza de datos tabulares
+  - pyarrow=19.0.1         # motor para leer/escribir Parquet (formato columnar)
+  - duckdb=1.2.1            # base de datos analítica embebida, sin servidor
+  - streamlit=1.45.0      # framework de dashboards web en Python puro
+  - plotly=6.0.1          # librería de gráficos interactivos

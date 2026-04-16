@@ -1,0 +1,14 @@
+# config.toml — configuración de Streamlit
+#
+# Por qué este archivo:
+#   - Sin él, Streamlit pide un email al primer arranque.
+#   - headless = true lo evita: ideal para entornos sin navegador abierto
+#     (servidores, WSL2, automatización).
+#   - Fija el puerto para que siempre sea el mismo y no cambie entre reinicios.
+ 
+[server]
+headless = true
+port = 8501
+ 
+[browser]
+gatherUsageStats = false   # no enviar telemetría a Streamlit

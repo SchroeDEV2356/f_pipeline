@@ -1,0 +1,26 @@
+# Entornos conda locales (si alguien crea el entorno dentro de la carpeta)
+envs/
+.conda/
+ 
+# Variables de entorno reales (nunca a Git)
+.env
+ 
+# Datos crudos (pueden pesar mucho; se regeneran con el script)
+data/raw/
+ 
+# Logs
+logs/*.log
+ 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
+# Datos procesados (se regeneran con el pipeline)
+data/processed/
+
+# Base de datos local (se regenera con el pipeline)
+data/*.duckdb
+data/*.duckdb.wal
+ 

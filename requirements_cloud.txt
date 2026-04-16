@@ -1,0 +1,14 @@
+# requirements_cloud.txt
+# ========================
+# Este archivo es SOLO para Streamlit Community Cloud.
+# Streamlit Cloud no usa conda — necesita un requirements.txt estándar.
+# No lo uses localmente; para eso sigue usando environment.yml con conda.
+
+requests==2.32.3
+urllib3==2.2.3
+python-dotenv==1.0.1
+pandas==2.2.3
+pyarrow==19.0.1
+duckdb==1.2.1
+streamlit==1.45.0
+plotly==6.0.1

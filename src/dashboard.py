@@ -15,7 +15,6 @@ Por qué esta dualidad:
 import os
 from pathlib import Path
 
-import duckdb
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -39,6 +38,7 @@ def load_data() -> pd.DataFrame:
     """
     if DB_PATH.exists():
         # ── Entorno local ─────────────────────────────────────────────────
+        import duckdb
         con = duckdb.connect(str(DB_PATH), read_only=True)
         df  = con.execute("""
             SELECT *

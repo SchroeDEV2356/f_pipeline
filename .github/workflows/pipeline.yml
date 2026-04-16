@@ -30,7 +30,10 @@ jobs:
 
     permissions:
       contents: write        # necesario para que el job pueda commitear el Parquet
-
+    
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      
     steps:
 
       # 1. Descarga el código del repositorio en la VM de GitHub
@@ -43,7 +46,7 @@ jobs:
         with:
           environment-file: environment.yml
           activate-environment: first_pipeline
-          auto-activate-base: false
+          auto-activate: false
 
       # 3. Crea las carpetas que el pipeline necesita y que no están en Git
       #    (data/raw y data/processed están en .gitignore, no existen en el repo)

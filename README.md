@@ -2,7 +2,7 @@
 
 Dashboard web con datos en vivo extraídos automáticamente desde la API pública de CoinGecko, procesados con un pipeline ETL profesional y desplegados en Streamlit Community Cloud.
 
-**[→ Ver dashboard en vivo](https://TU_URL.streamlit.app)**
+**[→ Ver dashboard en vivo](https://sch-fpipeline.streamlit.app/)**
 
 ---
 
@@ -77,7 +77,7 @@ f_pipeline/
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/TU_USUARIO/f_pipeline.git
+git clone https://github.com/SchroeDEV2356/f_pipeline.git
 cd f_pipeline
 
 # 2. Crear y activar el entorno conda

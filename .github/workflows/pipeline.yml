@@ -1,79 +1,41 @@
-# pipeline.yml — GitHub Actions
-# ================================
-# Este archivo define un "workflow": una serie de pasos que GitHub
-# ejecuta automáticamente en sus servidores (sin usar tu máquina).
-#
-# Por qué GitHub Actions y no cron local en WSL2:
-#   - WSL2 solo corre cuando tu PC está encendida y con la sesión activa.
-#   - GitHub Actions corre en la nube 24/7, independientemente de tu máquina.
-#   - Es gratuito hasta 2,000 minutos/mes (este pipeline usa ~1 minuto por ejecución).
-
 name: Pipeline ETL automático
 
 on:
   schedule:
-    # Cron de GitHub usa UTC. "0 */6 * * *" = cada 6 horas.
-    # Formato: minuto hora día-mes mes día-semana
-    # Ejemplos:
-    #   "0 */6 * * *"   → cada 6 horas
-    #   "0 8 * * *"     → cada día a las 8:00 UTC (02:00 CDX)
-    #   "0 */1 * * *"   → cada hora (no recomendado para APIs gratuitas)
     - cron: "0 */6 * * *"
-
-  # workflow_dispatch permite correrlo manualmente desde la UI de GitHub
-  # con un botón — útil para probar sin esperar al horario.
   workflow_dispatch:
 
 jobs:
   run_pipeline:
-    runs-on: ubuntu-latest   # GitHub provee una VM Ubuntu limpia en cada ejecución
+    runs-on: ubuntu-latest
 
     permissions:
-      contents: write        # necesario para que el job pueda commitear el Parquet
-    
+      contents: write
+
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-      
-    steps:
 
-      # 1. Descarga el código del repositorio en la VM de GitHub
+    steps:
       - name: Checkout del repositorio
         uses: actions/checkout@v4
 
-      # 2. Instala conda en la VM usando una action de la comunidad
-      - name: Configurar Conda
-        uses: conda-incubator/setup-miniconda@v3
+      - name: Configurar Python
+        uses: actions/setup-python@v5
         with:
-          environment-file: environment.yml
-          activate-environment: first_pipeline
-          auto-activate: false
+          python-version: "3.12"
+          cache: "pip"
 
-      # 3. Crea las carpetas que el pipeline necesita y que no están en Git
-      #    (data/raw y data/processed están en .gitignore, no existen en el repo)
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
       - name: Crear carpetas necesarias
-        run: |
-          mkdir -p data/raw data/processed logs
+        run: mkdir -p data/raw data/processed logs
 
-      # 4. Corre extract.py y transform.py.
-      #    No corremos load.py: en la nube no necesitamos DuckDB,
-      #    el dashboard leerá el Parquet directamente.
       - name: Ejecutar extracción y transformación
-        shell: bash -el {0}   # -el activa conda en el shell de GitHub Actions
         run: |
-          conda activate first_pipeline
           python src/extract.py
           python src/transform.py
 
-      # 5. Commitea el Parquet resultante al repositorio.
-      #    Así Streamlit Cloud puede leerlo en el siguiente render.
-      #
-      #    git config: necesario para que Git sepa quién hace el commit
-      #                en un entorno sin usuario configurado.
-      #    git add -f: -f (force) porque data/processed/ está en .gitignore;
-      #                aquí hacemos una excepción explícita solo para el Parquet.
-      #    || echo "...": si no hay cambios (los datos no cambiaron),
-      #                   git commit falla con código 1. El || echo evita
-      #                   que eso detenga el workflow como si fuera un error.
       - name: Commitear datos procesados
         run: |
           git config user.name  "github-actions[bot]"

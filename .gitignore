@@ -23,4 +23,4 @@ logs/*.log
 __pycache__/
 *.pyc
 *.pyo
-.DS_Store
+.DS_Storedownload_and_process_asg.py

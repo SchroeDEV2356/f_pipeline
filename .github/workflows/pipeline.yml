@@ -1,9 +1,7 @@
 name: Pipeline ETL automático
 
 on:
-  schedule:
-    - cron: "0 */6 * * *"
-  workflow_dispatch:
+  workflow_dispatch:    # solo manual, nunca automático
 
 jobs:
   run_pipeline:
